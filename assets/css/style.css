@@ -2,3 +2,13 @@
       width: 300px;
       height: 300px;
 }
+
+h1 {
+      font-size: 30px;
+      font-weight: bold;
+}
+
+.counter {
+      font-size: 25px;
+      font-weight: bold;
+}

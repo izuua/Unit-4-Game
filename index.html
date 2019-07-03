@@ -9,6 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Reset CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <!-- Added a link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 
@@ -19,20 +21,42 @@
     <div id="crystals">
     </div>
 
+
     <!-- <script src="assets/javascript/game.js"></script> -->
-
     <script>
+    var win = 0;
+    var lose = 0;
+    var restart = false;
+    var targetNumber;
+    var numberOptions = [0, 0, 0, 0];
 
-    var targetNumber = 53;
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-    $("#number-to-guess").text(targetNumber);
+    function setNumber() {
+      targetNumber = getRandomInt(19, 120);
+      $("#number-to-guess").text(targetNumber);
+
+      numberOptions.forEach(function(part, index) {
+        this[index] = getRandomInt(1, 12);
+        console.log(numberOptions[index]);
+      }, numberOptions)
+
+    }
+
+    setNumber();
   
     var counter = 0;
   
     // Now for the hard part. Creating multiple crystals each with their own unique number value.
   
     // We begin by expanding our array to include four options.
-    var numberOptions = [10, 5, 3, 7];
+   
+    var imgArray = ["assets/images/ruby.png", "assets/images/amethyst.png", "assets/images/sapphire.png", "assets/images/diamond.png"];
+
   
     // Next we create a for loop to create crystals for every numberOption.
     for (var i = 0; i < numberOptions.length; i++) {
@@ -45,7 +69,7 @@
       imageCrystal.addClass("crystal-image");
   
       // Each imageCrystal will be given a src link to the crystal image
-      imageCrystal.attr("src", "http://cdn.playbuzz.com/cdn/35910209-2844-45c0-b099-f4d82878d54f/00261fda-4062-4096-81fd-8cf96b9034e8.jpg");
+      imageCrystal.attr("src", imgArray[i]);
   
       // Each imageCrystal will be given a data attribute called data-crystalValue.
       // This data attribute will be set equal to the array value.
@@ -54,6 +78,16 @@
       // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
       $("#crystals").append(imageCrystal);
     }
+
+      var winDis = $("<div>");
+      winDis.addClass("counter");
+      winDis.text("Wins: " + win);
+      $("#crystals").append(winDis);
+
+      var loseDis = $("<div>");
+      loseDis.addClass("counter");
+      loseDis.text("Losses: " + lose);
+      $("#crystals").append(loseDis);
   
     // This time, our click event applies to every single crystal on the page. Not just one.
     $(".crystal-image").on("click", function() {
@@ -74,10 +108,27 @@
   
       if (counter === targetNumber) {
         alert("You win!");
+        win++;
+        restart = true;
+        winDis.text("Wins: " + win);
+        $("#crystals").append(winDis);
+        loseDis.text("Losses: " + lose);
+        $("#crystals").append(loseDis);
       }
   
       else if (counter >= targetNumber) {
         alert("You lose!!");
+        lose++;
+        restart = true;
+        winDis.text("Wins: " + win);
+        $("#crystals").append(winDis);
+        loseDis.text("Losses: " + lose);
+        $("#crystals").append(loseDis);
+      }
+
+      if (restart === true) {
+        setNumber();
+        console.log("restart run")
       }
   
     });
