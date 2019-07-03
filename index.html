@@ -26,7 +26,7 @@
     <script>
     var win = 0;
     var lose = 0;
-    var restart = false;
+    // var restart = false;
     var targetNumber;
     var numberOptions = [0, 0, 0, 0];
 
@@ -39,13 +39,38 @@
     function setNumber() {
       targetNumber = getRandomInt(19, 120);
       $("#number-to-guess").text(targetNumber);
-
       numberOptions.forEach(function(part, index) {
         this[index] = getRandomInt(1, 12);
         console.log(numberOptions[index]);
       }, numberOptions)
 
     }
+
+    function update() {
+        counterDis.text("Score: " + counter);
+        $("#crystals").append(counterDis);
+        winDis.text("Wins: " + win);
+        $("#crystals").append(winDis);
+        loseDis.text("Losses: " + lose);
+        $("#crystals").append(loseDis);
+        winLossDis.text("");
+        $("#crystals").append(winLossDis);
+    }
+
+    function crystalUpdate() {
+      for (var j = 0; j < numberOptions.length; j++) {
+        $("#crystal" + j).attr("data-crystalvalue", numberOptions[j]);
+      }
+    }
+
+    function reset() {
+        // restart = true;
+        counter = 0;
+        setNumber();
+        update();
+        crystalUpdate();    
+    }
+
 
     setNumber();
   
@@ -59,6 +84,7 @@
 
   
     // Next we create a for loop to create crystals for every numberOption.
+    
     for (var i = 0; i < numberOptions.length; i++) {
   
       // For each iteration, we will create an imageCrystal
@@ -70,6 +96,7 @@
   
       // Each imageCrystal will be given a src link to the crystal image
       imageCrystal.attr("src", imgArray[i]);
+      imageCrystal.attr("id", "crystal" + i);
   
       // Each imageCrystal will be given a data attribute called data-crystalValue.
       // This data attribute will be set equal to the array value.
@@ -78,6 +105,11 @@
       // Lastly, each crystal image (with all it classes and attributes) will get added to the page.
       $("#crystals").append(imageCrystal);
     }
+
+      var counterDis = $("<div>");
+      counterDis.addClass("counter");
+      counterDis.text("Score: " + counter);
+      $("#crystals").append(counterDis);
 
       var winDis = $("<div>");
       winDis.addClass("counter");
@@ -88,6 +120,10 @@
       loseDis.addClass("counter");
       loseDis.text("Losses: " + lose);
       $("#crystals").append(loseDis);
+
+      var winLossDis = $("<div>");
+      winLossDis.addClass("win-loss-display");
+
   
     // This time, our click event applies to every single crystal on the page. Not just one.
     $(".crystal-image").on("click", function() {
@@ -102,34 +138,32 @@
       // We then add the crystalValue to the user's "counter" which is a global variable.
       // Every click, from every crystal adds to the global counter.
       counter += crystalValue;
+      update();
   
       // All of the same game win-lose logic applies. So the rest remains unchanged.
-      alert("New score: " + counter);
+      // alert("New score: " + counter);
   
       if (counter === targetNumber) {
-        alert("You win!");
         win++;
-        restart = true;
-        winDis.text("Wins: " + win);
-        $("#crystals").append(winDis);
-        loseDis.text("Losses: " + lose);
-        $("#crystals").append(loseDis);
+        reset();
+        //alert("You win!");
+        winLossDis.text("You win!");
+        $("#crystals").append(winLossDis);
       }
   
       else if (counter >= targetNumber) {
-        alert("You lose!!");
         lose++;
-        restart = true;
-        winDis.text("Wins: " + win);
-        $("#crystals").append(winDis);
-        loseDis.text("Losses: " + lose);
-        $("#crystals").append(loseDis);
+        reset();
+        //alert("You lose!!");
+        winLossDis.text("You lose!!");
+        $("#crystals").append(winLossDis);
       }
 
-      if (restart === true) {
-        setNumber();
-        console.log("restart run")
-      }
+      // if (restart === true) {
+      //   setNumber();
+      //   console.log("restart run")
+      //   restart = false;
+      // }
   
     });
 </script>  

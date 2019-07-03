@@ -12,3 +12,8 @@ h1 {
       font-size: 25px;
       font-weight: bold;
 }
+
+.win-loss-display {
+      font-size: 50px;
+      font-weight: bold;
+}
