@@ -21,3 +21,11 @@ h1 {
       font-size: 50px;
       font-weight: bold;
 }
+
+.image {
+      height: 500px;
+      margin: 0 auto;
+      display: block;
+      float: none;
+      position: relative;
+}

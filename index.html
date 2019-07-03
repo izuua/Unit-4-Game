@@ -57,6 +57,15 @@
         $("#crystals").append(winLossDis);
     }
 
+    function imageReset() {
+      $("#win-image").attr("src", "");
+      $("#win-image").append(winImage);
+      $("#win-image").remove();
+      $("#lose-image").attr("src", "");
+      $("#lose-image").append(loseImage);
+      $("#lose-image").remove();
+    }
+
     function crystalUpdate() {
       for (var j = 0; j < numberOptions.length; j++) {
         $("#crystal" + j).attr("data-crystalvalue", numberOptions[j]);
@@ -124,9 +133,19 @@
       var winLossDis = $("<div>");
       winLossDis.addClass("win-loss-display");
 
+      var winImage = $("<img>");
+      winImage.addClass("image");
+      winImage.attr("id", "win-image");
+
+      var loseImage = $("<img>");
+      loseImage.addClass("image");
+      loseImage.attr("id", "lose-image");
+
+
   
     // This time, our click event applies to every single crystal on the page. Not just one.
     $(".crystal-image").on("click", function() {
+      imageReset();
   
       // Determining the crystal's value requires us to extract the value from the data attribute.
       // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
@@ -146,27 +165,28 @@
       if (counter === targetNumber) {
         win++;
         reset();
+        console.log("You win!");
         //alert("You win!");
         winLossDis.text("You win!");
         $("#crystals").append(winLossDis);
+        winImage.attr("src", "assets/images/winner.gif");
+        $("#crystals").append(winImage);
       }
   
       else if (counter >= targetNumber) {
         lose++;
         reset();
+        console.log("You lose!");
         //alert("You lose!!");
         winLossDis.text("You lose!!");
         $("#crystals").append(winLossDis);
+        loseImage.attr("src", "assets/images/loser.gif");
+        $("#crystals").append(loseImage);
       }
-
-      // if (restart === true) {
-      //   setNumber();
-      //   console.log("restart run")
-      //   restart = false;
-      // }
   
     });
-</script>  
+</script>
+
 
 
 </body>
